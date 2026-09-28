@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#087b50">
+  <title>WhatsApp Rápido</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="card">
+    <div class="icon"><img src="logo.svg" alt="" width="32" height="32"></div>
+    <p class="eyebrow">CONTACTO EN UN TOQUE</p>
+    <h1>WhatsApp Rápido</h1>
+    <p class="intro">Escribí el número y empezá una charla sin agendar el contacto.</p>
+
+    <form id="form" novalidate>
+      <label for="phone">Número de celular</label>
+      <div class="phone"><b>🇦🇷 +54</b><input id="phone" inputmode="numeric" autocomplete="tel-national" placeholder="11 2345 6789" aria-describedby="help error" required></div>
+      <small id="help">Ingresá los 10 dígitos, sin 0, sin 15 y sin +54. WhatsApp agrega el 9 automáticamente.</small>
+      <p id="error" class="error" role="alert" hidden></p>
+
+      <details class="profile">
+        <summary class="profile-heading"><span class="profile-title-wrap"><strong id="profile-title">Tu perfil</strong><span>Tus datos se guardan aquí cuando confirmás.</span></span><span aria-hidden="true">▾</span></summary>
+        <label for="name">¿Cómo te llamás?</label>
+        <input class="profile-input" id="name" autocomplete="name" placeholder="Tu nombre" maxlength="80">
+        <label for="email" class="profile-phone-label">Correo electrónico</label>
+        <input class="profile-input" id="email" type="email" autocomplete="email" placeholder="tu@correo.com" maxlength="120">
+        <label for="my-phone" class="profile-phone-label">Mi WhatsApp</label>
+        <div class="phone profile-phone"><b>🇦🇷 +54</b><input class="profile-input" id="my-phone" inputmode="numeric" autocomplete="tel-national" placeholder="11 2345 6789" maxlength="10" aria-describedby="my-phone-help"></div>
+        <small id="my-phone-help" class="profile-help">Los mismos 10 dígitos, sin 0 ni 15. WhatsApp agrega el 9.</small>
+        <label for="qr-message">Mensaje para el QR de WhatsApp</label>
+        <textarea class="profile-input profile-message" id="qr-message" rows="2" maxlength="300">¡Hola! Vi tu QR y quería contactarte.</textarea>
+        <div class="profile-grid">
+          <div><label for="instagram">Instagram</label><input class="profile-input" id="instagram" placeholder="instagram.com/tuusuario" inputmode="url"></div>
+          <div><label for="tiktok">TikTok</label><input class="profile-input" id="tiktok" placeholder="tiktok.com/@tuusuario" inputmode="url"></div>
+          <div><label for="website">Tu web</label><input class="profile-input" id="website" placeholder="tusitio.com" inputmode="url"></div>
+          <div class="full"><label for="linkedin">LinkedIn</label><input class="profile-input" id="linkedin" placeholder="linkedin.com/in/tuusuario" inputmode="url"></div>
+        </div>
+        <details>
+          <summary>Datos bancarios opcionales</summary>
+          <p class="privacy-note">Quedan guardados en este navegador. Solo se incluyen si activás “Datos bancarios” antes de abrir WhatsApp. En un dispositivo compartido, otras personas podrían verlos.</p>
+          <div class="profile-grid">
+            <div><label for="bank">Banco / billetera</label><input class="profile-input" id="bank" placeholder="Banco o billetera"></div>
+            <div><label for="holder">Titular</label><input class="profile-input" id="holder" placeholder="Nombre del titular"></div>
+            <div><label for="alias">Alias</label><input class="profile-input" id="alias" autocomplete="off" placeholder="mi.alias"></div>
+            <div><label for="cbu">CBU / CVU</label><input class="profile-input" id="cbu" inputmode="numeric" autocomplete="off" placeholder="22 dígitos"></div>
+          </div>
+        </details>
+        <div class="profile-save">
+          <button id="save-profile" type="button">Guardar mis datos</button>
+          <small id="profile-save-status" role="status">Guardá el perfil para confirmar que tus datos queden en este dispositivo.</small>
+        </div>
+      </details>
+
+      <details class="qr-dropdown">
+        <summary class="qr-summary"><span><strong>Mis códigos QR</strong><small>WhatsApp y tarjeta de contacto</small></span><span class="qr-chevron" aria-hidden="true">▾</span></summary>
+      <section class="qr-section" aria-labelledby="qr-title">
+        <h2 id="qr-title">Elegí un código para compartir</h2>
+        <p class="qr-intro">Compartilos desde tu pantalla para que te contacten o te agenden.</p>
+        <div class="qr-grid">
+          <article class="qr-card">
+            <h3>Escribime por WhatsApp</h3>
+            <p>Abre un chat con tu mensaje preparado.</p>
+            <div class="qr-box" id="whatsapp-qr" aria-label="QR para iniciar un chat de WhatsApp"></div>
+          </article>
+          <article class="qr-card">
+            <h3>Agendame</h3>
+            <p>Abre una tarjeta para guardar tu contacto.</p>
+            <div class="qr-box" id="contact-qr" aria-label="QR de tu tarjeta de contacto"></div>
+          </article>
+        </div>
+        <p id="qr-status" class="qr-status" aria-live="polite">Completá tu nombre y WhatsApp en “Tu perfil” para crear tus códigos.</p>
+      </section>
+      </details>
+
+      <label for="message">Mensaje rápido <span>(opcional)</span></label>
+      <div class="chips">
+        <button type="button" data-msg="¡Hola! ¿Cómo estás? Me gustaría seguir en contacto.">👋 Saludo</button>
+        <button type="button" data-msg="¡Hola! {intro}Te escribo para que tengamos el contacto.">🤝 Nos conocimos</button>
+        <button type="button" data-msg="¡Hola! Te escribo por lo que conversamos. Cuando puedas, seguimos en contacto.">💬 Seguimos hablando</button>
+      </div>
+      <textarea id="message" rows="3" placeholder="Elegí una opción o escribí tu mensaje…"></textarea>
+      <div id="share-options" class="share-options" hidden>
+        <span>Agregar al mensaje (opcional):</span>
+        <label id="share-email-option"><input type="checkbox" id="share-email"> Mi correo</label>
+        <label id="share-instagram-option"><input type="checkbox" id="share-instagram"> Instagram</label>
+        <label id="share-tiktok-option"><input type="checkbox" id="share-tiktok"> TikTok</label>
+        <label id="share-website-option"><input type="checkbox" id="share-website"> Mi web</label>
+        <label id="share-linkedin-option"><input type="checkbox" id="share-linkedin"> LinkedIn</label>
+        <label><input type="checkbox" id="share-bank"> Datos bancarios</label>
+      </div>
+      <button class="submit" type="submit">Abrir WhatsApp <span>↗</span></button>
+    </form>
+    <p class="note">Podés revisar el mensaje antes de enviarlo. WhatsApp no envía nada hasta que vos lo confirmes.</p>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.js"></script>
+  <script src="app.js?v=11"></script>
+</body>
+</html>
+
