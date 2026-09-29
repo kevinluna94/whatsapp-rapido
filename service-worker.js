@@ -1,11 +1,11 @@
-const CACHE_NAME = "whatsapp-rapido-v1";
+const CACHE_NAME = "whatsapp-rapido-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js?v=11",
   "./pwa.js",
-  "./manifest.webmanifest",
+  "./manifest.json",
   "./logo.svg",
   "./icons/icon-192.png",
   "./icons/icon-512.png",

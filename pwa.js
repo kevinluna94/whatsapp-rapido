@@ -12,9 +12,13 @@ window.addEventListener("beforeinstallprompt", (event) => {
 
 installButton.addEventListener("click", async () => {
   if (!installPrompt) {
-    installHelp.textContent = /iphone|ipad|ipod/i.test(navigator.userAgent)
-      ? "En Safari, tocá Compartir y elegí ‘Agregar a pantalla de inicio’."
-      : "Abrí el menú del navegador y elegí ‘Instalar app’ o ‘Agregar a pantalla principal’.";
+    const isApple = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isAndroid = /android/i.test(navigator.userAgent);
+    installHelp.textContent = isApple
+      ? "En Safari: tocá Compartir y luego ‘Agregar a pantalla de inicio’."
+      : isAndroid
+        ? "En Chrome: tocá ⋮ y elegí ‘Instalar app’ o ‘Agregar a pantalla principal’. Si abriste este enlace desde otra app, abrilo primero en Chrome."
+        : "Abrí este enlace en Chrome o Edge y elegí ‘Instalar app’ en el menú del navegador.";
     installHelp.hidden = false;
     return;
   }
