@@ -4,7 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#087b50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WhatsApp Rápido">
   <title>WhatsApp Rápido</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,6 +19,10 @@
     <p class="eyebrow">CONTACTO EN UN TOQUE</p>
     <h1>WhatsApp Rápido</h1>
     <p class="intro">Escribí el número y empezá una charla sin agendar el contacto.</p>
+    <div class="install-wrap">
+      <button id="install-app" type="button">Instalar app</button>
+      <small id="install-help" role="status" hidden></small>
+    </div>
 
     <form id="form" novalidate>
       <label for="phone">Número de celular</label>
@@ -96,6 +106,7 @@
   </main>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.js"></script>
   <script src="app.js?v=11"></script>
+  <script src="pwa.js"></script>
 </body>
 </html>
 
