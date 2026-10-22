@@ -27,11 +27,6 @@
     </div>
 
     <form id="form" novalidate>
-      <label for="phone">Número de celular</label>
-      <div class="phone"><b>🇦🇷 +54</b><input id="phone" inputmode="numeric" autocomplete="tel-national" placeholder="11 2345 6789" aria-describedby="help error" required></div>
-      <small id="help">Ingresá los 10 dígitos, sin 0, sin 15 y sin +54. WhatsApp agrega el 9 automáticamente.</small>
-      <p id="error" class="error" role="alert" hidden></p>
-
       <details class="profile">
         <summary class="profile-heading"><span class="profile-title-wrap"><strong id="profile-title">Tu perfil</strong><span>Tus datos se guardan aquí cuando confirmás.</span></span><span aria-hidden="true">▾</span></summary>
         <label for="name">¿Cómo te llamás?</label>
@@ -91,6 +86,11 @@
         <p id="qr-status" class="qr-status" aria-live="polite">Completá tu nombre y WhatsApp en “Tu perfil” para crear tus códigos.</p>
       </section>
       </details>
+
+      <label for="phone">Número de celular</label>
+      <div class="phone"><b>🇦🇷 +54</b><input id="phone" inputmode="numeric" autocomplete="tel-national" placeholder="11 2345 6789" aria-describedby="help error" required></div>
+      <small id="help">Ingresá los 10 dígitos, sin 0, sin 15 y sin +54. WhatsApp agrega el 9 automáticamente.</small>
+      <p id="error" class="error" role="alert" hidden></p>
 
       <label for="message">Mensaje rápido <span>(opcional)</span></label>
       <div class="chips">
