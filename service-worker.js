@@ -1,9 +1,9 @@
-const CACHE_NAME = "whatsapp-rapido-v2";
+const CACHE_NAME = "whatsapp-rapido-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
-  "./app.js?v=11",
+  "./app.js?v=12",
   "./pwa.js",
   "./manifest.json",
   "./logo.svg",
@@ -46,4 +46,3 @@ self.addEventListener("fetch", (event) => {
     return response;
   })));
 });
-

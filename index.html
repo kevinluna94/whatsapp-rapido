@@ -49,6 +49,12 @@
           <div><label for="website">Tu web</label><input class="profile-input" id="website" placeholder="tusitio.com" inputmode="url"></div>
           <div class="full"><label for="linkedin">LinkedIn</label><input class="profile-input" id="linkedin" placeholder="linkedin.com/in/tuusuario" inputmode="url"></div>
         </div>
+        <div class="custom-links">
+          <strong>Enlaces personalizados</strong>
+          <small class="profile-help">Formularios, webs, tu live de TikTok… Poné un nombre corto y el enlace. Agregá todos los que quieras.</small>
+          <div id="custom-links-list"></div>
+          <button id="add-custom-link" type="button" class="secondary-btn">+ Agregar enlace</button>
+        </div>
         <details>
           <summary>Datos bancarios opcionales</summary>
           <p class="privacy-note">Quedan guardados en este navegador. Solo se incluyen si activás “Datos bancarios” antes de abrir WhatsApp. En un dispositivo compartido, otras personas podrían verlos.</p>
@@ -100,6 +106,7 @@
         <label id="share-tiktok-option"><input type="checkbox" id="share-tiktok"> TikTok</label>
         <label id="share-website-option"><input type="checkbox" id="share-website"> Mi web</label>
         <label id="share-linkedin-option"><input type="checkbox" id="share-linkedin"> LinkedIn</label>
+        <span id="share-custom-links" class="share-custom"></span>
         <label><input type="checkbox" id="share-bank"> Datos bancarios</label>
       </div>
       <button class="submit" type="submit">Abrir WhatsApp <span>↗</span></button>
@@ -107,8 +114,7 @@
     <p class="note">Podés revisar el mensaje antes de enviarlo. WhatsApp no envía nada hasta que vos lo confirmes.</p>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.js"></script>
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
   <script src="pwa.js"></script>
 </body>
 </html>
-

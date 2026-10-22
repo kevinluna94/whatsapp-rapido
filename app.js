@@ -16,9 +16,73 @@ const saveProfileButton = document.querySelector("#save-profile");
 const profileSaveStatus = document.querySelector("#profile-save-status");
 const profileFields = ["name", "email", "my-phone", "qr-message", "instagram", "tiktok", "website", "linkedin", "bank", "holder", "alias", "cbu"];
 const chips = [...document.querySelectorAll(".chips button")];
+const customList = document.querySelector("#custom-links-list");
+const shareCustom = document.querySelector("#share-custom-links");
+let customLinks = [];
+const checkedCustom = new Set();
 
 function readProfile() {
   return Object.fromEntries(profileFields.map((id) => [id, document.querySelector(`#${id}`).value.trim()]));
+}
+
+function newLinkId() {
+  return `l${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+}
+
+function renderCustomRows() {
+  customList.replaceChildren();
+  customLinks.forEach((link) => {
+    const row = document.createElement("div");
+    row.className = "custom-link-row";
+    const name = document.createElement("input");
+    name.className = "profile-input link-name";
+    name.placeholder = "Nombre (ej: Formulario)";
+    name.maxLength = 40;
+    name.setAttribute("aria-label", "Nombre del enlace");
+    name.value = link.name;
+    const url = document.createElement("input");
+    url.className = "profile-input link-url";
+    url.placeholder = "https://...";
+    url.inputMode = "url";
+    url.setAttribute("aria-label", "Enlace");
+    url.value = link.url;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "✕";
+    remove.setAttribute("aria-label", "Eliminar enlace");
+    const onChange = () => {
+      link.name = name.value.trim();
+      link.url = url.value.trim();
+      markPending();
+      updateShareOptions();
+    };
+    name.addEventListener("input", onChange);
+    url.addEventListener("input", onChange);
+    remove.addEventListener("click", () => {
+      customLinks = customLinks.filter((item) => item !== link);
+      checkedCustom.delete(link.id);
+      renderCustomRows();
+      markPending();
+      updateShareOptions();
+    });
+    row.append(name, url, remove);
+    customList.append(row);
+  });
+}
+
+function markPending() {
+  profileSaveStatus.textContent = "Hay cambios pendientes. Tocá “Guardar mis datos” para conservarlos.";
+  profileSaveStatus.classList.remove("save-error");
+}
+
+document.querySelector("#add-custom-link").addEventListener("click", () => {
+  customLinks.push({ id: newLinkId(), name: "", url: "" });
+  renderCustomRows();
+  customList.querySelector(".custom-link-row:last-child .link-name").focus();
+});
+
+function validCustomLinks() {
+  return customLinks.filter((link) => link.name && formatLink(link.url));
 }
 
 try {
@@ -30,13 +94,19 @@ try {
   profileFields.forEach((id) => {
     if (typeof saved[id] === "string") document.querySelector(`#${id}`).value = saved[id];
   });
+  if (Array.isArray(saved.customLinks)) {
+    customLinks = saved.customLinks
+      .filter((item) => item && typeof item.name === "string" && typeof item.url === "string")
+      .map((item) => ({ id: typeof item.id === "string" ? item.id : newLinkId(), name: item.name, url: item.url }));
+  }
 } catch {
   // The form remains usable when browser storage is unavailable.
 }
+renderCustomRows();
 
 function persistProfile() {
   try {
-    localStorage.setItem("whatsapp-rapido-profile", JSON.stringify(readProfile()));
+    localStorage.setItem("whatsapp-rapido-profile", JSON.stringify({ ...readProfile(), customLinks }));
     return true;
   } catch {
     return false;
@@ -53,7 +123,7 @@ saveProfileButton.addEventListener("click", () => {
 
 function updateShareOptions() {
   const profile = readProfile();
-  const hasLinks = Boolean(profile.email || profile.instagram || profile.tiktok || profile.website || profile.linkedin);
+  const hasLinks = Boolean(profile.email || profile.instagram || profile.tiktok || profile.website || profile.linkedin) || validCustomLinks().length > 0;
   const hasBank = Boolean(profile.bank || profile.holder || profile.alias || profile.cbu);
   shareOptions.hidden = !(hasLinks || hasBank);
   document.querySelector("#share-email-option").hidden = !profile.email;
@@ -62,6 +132,16 @@ function updateShareOptions() {
   document.querySelector("#share-website-option").hidden = !profile.website;
   document.querySelector("#share-linkedin-option").hidden = !profile.linkedin;
   shareBank.closest("label").hidden = !hasBank;
+  shareCustom.replaceChildren();
+  validCustomLinks().forEach((link) => {
+    const label = document.createElement("label");
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = checkedCustom.has(link.id);
+    box.addEventListener("change", () => (box.checked ? checkedCustom.add(link.id) : checkedCustom.delete(link.id)));
+    label.append(box, ` ${link.name}`);
+    shareCustom.append(label);
+  });
 }
 
 document.querySelectorAll(".profile-input").forEach((input) => {
@@ -176,6 +256,9 @@ function profileMessage(profile) {
   ].map(([label, value, selected, emoji]) => selected && formatLink(value)
     ? { label, emoji, url: formatLink(value) }
     : null).filter(Boolean);
+  validCustomLinks().filter((link) => checkedCustom.has(link.id)).forEach((link) => {
+    links.push({ label: link.name, emoji: "\u{1F517}", url: formatLink(link.url), custom: true });
+  });
   if (shareEmail.checked && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) {
     links.push({ label: "Correo", emoji: "\u{2709}", url: profile.email });
   }
@@ -187,8 +270,8 @@ function profileMessage(profile) {
   ].filter(Boolean) : [];
   const intros = [];
   if (links.length === 1) {
-    const { label, emoji } = links[0];
-    intros.push(label === "Instagram" ? `¡Hola! Te dejo mi Instagram para que me sigas ${emoji} ${"\u{1F60A}"}`
+    const { label, emoji, custom } = links[0];
+    intros.push(custom ? `¡Hola! Te dejo este enlace: ${label} ${emoji}` : label === "Instagram" ? `¡Hola! Te dejo mi Instagram para que me sigas ${emoji} ${"\u{1F60A}"}`
       : label === "TikTok" ? `¡Hola! Te dejo mi TikTok para que me sigas ${emoji}`
         : label === "LinkedIn" ? `¡Hola! Te dejo mi LinkedIn para que conectemos ${emoji}`
           : label === "Correo" ? `¡Hola! Te dejo mi correo para que me escribas ${emoji}`
@@ -220,4 +303,3 @@ form.addEventListener("submit", (event) => {
   const url = `https://wa.me/549${digits}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
   window.location.assign(url);
 });
-
